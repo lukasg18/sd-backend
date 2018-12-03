@@ -11,14 +11,16 @@ import { Pessoa } from './pessoa.entity';
 
 @Entity()
 export class IMC extends BaseEntity {
+  
   @PrimaryGeneratedColumn()
-  idpessoa: number;
+  idimc: number;
 
-  @Column({ length: 100 })
-  valorimc: string;
+  @Column({type:"float"})
+  valorimc: number;
 
-  @Column({ nullable: false })
+  @Column()
   data: string;
+  
 
   //###################################################################
   //############################ RELAÇÕES #############################

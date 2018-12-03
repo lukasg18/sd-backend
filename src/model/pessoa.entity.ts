@@ -12,20 +12,23 @@ export class Pessoa extends BaseEntity {
   @PrimaryGeneratedColumn()
   idpessoa: number;
 
-  @Column({ length: 100 })
+  @Column()
   nome: string;
 
-  @Column({ nullable: false })
+  @Column()
   datanascimento: string;
 
-  @Column({ nullable: false, length: 12, unique: true })
+  @Column({ length: 20, unique: true })
   cpf: string;
 
-  @Column({ nullable: false})
+  @Column({ type:"float" })
   peso: number;
 
-  @Column({ nullable: false})
+  @Column({ type:"float" })
   altura: number;
+
+  @Column()
+  sexo: string;
 
   //###################################################################
   //############################ RELAÇÕES #############################

@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pessoa } from '../model/pessoa.entity';
+import { IMC } from '../model/imc.entity';
 
 @Injectable()
 export class PessoaService{
@@ -11,15 +12,28 @@ export class PessoaService{
     return Pessoa.findOne({ idpessoa: id });
   }
 
-  async Create(body: any): Promise<Pessoa> {
+  async Create(body: any): Promise<any> {
     let pessoa = new Pessoa();
+    let busca;
+    let data = new Date();
+    let imc = new IMC();
+    let resultado;
     try {
       pessoa.nome = body.nome;
       pessoa.peso = body.peso;
       pessoa.cpf = body.cpf;
+      pessoa.sexo = body.sexo;
       pessoa.datanascimento = body.datanascimento;
       pessoa.altura = body.altura;
-      return await Pessoa.save(pessoa);
+      await Pessoa.save(pessoa);
+
+      busca = await Pessoa.findOne({ cpf: body.cpf })
+
+      resultado = (body.peso/((body.altura)**2));
+      imc.pessoa = busca.idpessoa;
+      imc.valorimc = resultado;
+      imc.data = String(data);
+      return await IMC.save(imc)
     } catch (err) {
       throw new Error(
         `Erro ao salvar pessoa \n Erro: ${err.name}\n Mensagem: ${
