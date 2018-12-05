@@ -59,13 +59,27 @@ export class PessoaService{
     }
   }
 
-  async Update(body: any): Promise<Pessoa> {
+  async Update(body: any): Promise<any> {
+    let imc = new IMC();
+    let data = new Date();
+    let busca;
     try {
-      let busca = await Pessoa.findOne({
+      busca = await Pessoa.findOne({
         cpf: body.cpf,
       });
-      busca.cpf = body.novoregistro;
-      return await Pessoa.save(busca);
+      busca.nome = body.nome;
+      busca.peso = body.peso;
+      busca.sexo = body.sexo;
+      busca.datanascimento = body.datanascimento;
+      busca.altura = body.altura;
+      await Pessoa.save(busca);
+
+      let resultado = (body.peso/((body.altura)**2));
+
+      imc.pessoa = busca.idpessoa;
+      imc.valorimc = resultado;
+      imc.data = String(data);
+      return await IMC.save(imc)
     } catch (err) {
       throw new Error(
         `Erro ao atualizar pessoa \n Erro: ${err.name}\n Mensagem: ${
